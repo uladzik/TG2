@@ -226,6 +226,10 @@
           <div class="stat-value" id="stat-completed">0</div>
         </div>
       </div>
+
+      <button class="btn btn-outline" style="margin-top:12px;" onclick="connectGoogle()">
+        Connect Google Calendar
+      </button>
     </div>
 
     <div style="margin-top:16px;">
@@ -339,7 +343,7 @@
         cell.classList.add('selected');
         updateCreateHeader();
       };
-      if (i === 0) { // today default
+      if (i === 0) {
         selectedDate = iso;
         cell.classList.add('selected');
       }
@@ -532,6 +536,24 @@
       root.appendChild(actions);
     }
     return root;
+  }
+
+  function connectGoogle() {
+    if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+      alert('Telegram WebApp data not available');
+      return;
+    }
+    
+    const userId = tg.initDataUnsafe.user.id;
+    const authUrl = `https://tg2.railway.internal/auth/google/start?user_id=${userId}`;
+    
+    // Для Telegram Mini Apps используем openLink
+    if (tg.openLink) {
+      tg.openLink(authUrl);
+    } else {
+      // Fallback для обычного браузера
+      window.open(authUrl, '_blank');
+    }
   }
 
   // init
