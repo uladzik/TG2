@@ -226,10 +226,6 @@
           <div class="stat-value" id="stat-completed">0</div>
         </div>
       </div>
-
-      <button class="btn btn-outline" style="margin-top:12px;" onclick="connectGoogle()">
-        Connect Google Calendar
-      </button>
     </div>
 
     <div style="margin-top:16px;">
@@ -295,7 +291,9 @@
     tg.ready();
   }
 
-  // ====== simple data layer (localStorage) ======
+  // ====== simple data layer (API + localStorage) ======
+  const API_URL = 'https://tg2.railway.internal';
+
   function loadMeetings() {
     try {
       return JSON.parse(localStorage.getItem('meetings') || '[]');
@@ -305,6 +303,20 @@
   }
   function saveMeetings(list) {
     localStorage.setItem('meetings', JSON.stringify(list));
+    syncToServer(list);
+  }
+
+  async function syncToServer(list) {
+    try {
+      const response = await fetch(`${API_URL}/save_meetings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ meetings: list })
+      });
+      if (!response.ok) console.warn('Server sync failed');
+    } catch (e) {
+      console.warn('Cannot reach server, using localStorage only', e);
+    }
   }
 
   // ====== navigation ======
@@ -343,7 +355,7 @@
         cell.classList.add('selected');
         updateCreateHeader();
       };
-      if (i === 0) {
+      if (i === 0) { // today default
         selectedDate = iso;
         cell.classList.add('selected');
       }
@@ -536,24 +548,6 @@
       root.appendChild(actions);
     }
     return root;
-  }
-
-  function connectGoogle() {
-    if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-      alert('Telegram WebApp data not available');
-      return;
-    }
-    
-    const userId = tg.initDataUnsafe.user.id;
-    const authUrl = `https://tg2.railway.internal/auth/google/start?user_id=${userId}`;
-    
-    // Для Telegram Mini Apps используем openLink
-    if (tg.openLink) {
-      tg.openLink(authUrl);
-    } else {
-      // Fallback для обычного браузера
-      window.open(authUrl, '_blank');
-    }
   }
 
   // init
