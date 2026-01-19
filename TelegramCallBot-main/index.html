@@ -540,12 +540,9 @@
   }
 
 function connectGoogle() {
-    // Получаем ID пользователя из Telegram Mini App SDK
     const userId = tg.initDataUnsafe?.user?.id;
     if (userId) {
-        // Передаем ID как параметр state
-        window.open(https://tg-2-pearl.vercel.app/{userId}`, "_blank");
-;
+        window.open(`https://tg-2-git-main-123s-projects-06b2594f.vercel.app/auth/google/start?user_id=${userId}`, "_blank");
     }
   }
 
