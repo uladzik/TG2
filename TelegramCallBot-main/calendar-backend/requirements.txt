@@ -1,0 +1,4 @@
+aiogram>=3.13
+aiohttp>=3.10
+google-auth-oauthlib>=1.2.0
+pydantic>=2.0
