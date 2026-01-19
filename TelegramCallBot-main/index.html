@@ -226,11 +226,6 @@
           <div class="stat-value" id="stat-completed">0</div>
         </div>
       </div>
-
-      <!-- КНОПКА ПОДКЛЮЧЕНИЯ К GOOGLE -->
-      <button class="btn btn-outline" style="margin-top:12px;" onclick="connectGoogle()">
-        Connect Google Calendar
-      </button>
     </div>
 
     <div style="margin-top:16px;">
@@ -537,13 +532,6 @@
       root.appendChild(actions);
     }
     return root;
-  }
-
-function connectGoogle() {
-    const userId = tg.initDataUnsafe?.user?.id;
-    if (userId) {
-        window.open(`https://tg-2-git-main-123s-projects-06b2594f.vercel.app/auth/google/start?user_id=${userId}`, "_blank");
-    }
   }
 
   // init
